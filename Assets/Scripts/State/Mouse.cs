@@ -1,10 +1,14 @@
 //Mouse handler class as a singleton
 
+using System;
+using UnityEngine;
+
 public class Mouse {
      private static Mouse instance = null;
-     private  IMouseState mouseState;
+     private IMouseState mouseState;
 
-    public Mouse() {}
+    public Mouse() {
+    }
 
     
     public static Mouse Instance
@@ -22,7 +26,7 @@ public class Mouse {
 
     
     
-    public void SetState(IMouseState state)
+    public void SetState(IMouseState state, GameObject? gameObject, Vector3[] vecs)
     {
         if(mouseState!=null)
         {
@@ -32,9 +36,11 @@ public class Mouse {
 
         if(mouseState!=null)
         {
-            mouseState.OnEnterState();
+            mouseState.OnEnterState(gameObject, vecs);
         }
     }
+
+    
 
     public void Update()
     {

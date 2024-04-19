@@ -1,4 +1,5 @@
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class DraggableObject : MonoBehaviour
@@ -13,24 +14,18 @@ public class DraggableObject : MonoBehaviour
         Subject.clean -= Implode;
     }
 
-    private Vector3 screenPoint;
-    private Vector3 offset;
+    public Vector3 screenPoint, offset;
 
-     private Vector3 curPosition;
     void OnMouseDown()
     {
-       
-        screenPoint = Camera.main.WorldToScreenPoint(gameObject.transform.position);
-        offset = gameObject.transform.position - 
-        Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+        setMouseOffset();
+        MouseController.mouse.SetState(new DragState(), gameObject , setMouseOffset());
     }
 
-    void OnMouseDrag()
-    {
-      
-        Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
-        curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
-        transform.position = curPosition;
+    //void OnMouseDrag()
+
+     void OnMouseUp() {
+         MouseController.mouse.SetState(new FreeState(), null, null);
     }
 
     void Update()
@@ -38,6 +33,16 @@ public class DraggableObject : MonoBehaviour
       
     }
 
+    Vector3[] setMouseOffset()
+    {   
+        Vector3[]vecs = new Vector3[2];
+        screenPoint = Camera.main.WorldToScreenPoint(gameObject.transform.position);
+        vecs[0]=screenPoint;
+        offset = gameObject.transform.position - 
+        Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+        vecs[1]=offset;
+        return vecs;
+    }
 
     void Implode(){
         Destroy(gameObject);

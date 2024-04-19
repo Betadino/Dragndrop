@@ -5,26 +5,19 @@ using UnityEngine;
 
 public class MouseController : MonoBehaviour
 {
-    private Mouse mouse;
+    
+
+    public static Mouse mouse;
     // Start is called before the first frame update
     void Start()
     {
-        mouse.SetState(new FreeState());
+        mouse=new();
+        mouse.SetState(new FreeState(), null, null);
 
     }
-
-    void OnMouseDrag()
-    {
-        mouse.SetState(new DragState());
-    }
-
     // Update is called once per frame
     void Update()
     {
         mouse.Update();
-        if (Input.GetMouseButtonDown(0))
-       {
-        
-       }
     }
 }
